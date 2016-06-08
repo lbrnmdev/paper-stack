@@ -49,4 +49,7 @@ group :development do
 
   # Better Errors replaces the standard Rails error page with a much better and more useful error page.
   gem 'better_errors'
+
+  # Capybara helps you test web applications by simulating how a real user would interact with your app
+  gem 'capybara'
 end
