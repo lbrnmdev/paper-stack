@@ -38,6 +38,12 @@ group :development, :test do
 
   # Use rspec as testing framework
   gem 'rspec-rails', '~> 3.4'
+
+  # Capybara helps you test web applications by simulating how a real user would interact with your app
+  gem 'capybara'
+
+  # fixture replacement
+  gem 'factory_girl_rails'
 end
 
 group :development do
@@ -49,7 +55,4 @@ group :development do
 
   # Better Errors replaces the standard Rails error page with a much better and more useful error page.
   gem 'better_errors'
-
-  # Capybara helps you test web applications by simulating how a real user would interact with your app
-  gem 'capybara'
 end
