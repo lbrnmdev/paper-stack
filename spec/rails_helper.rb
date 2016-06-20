@@ -55,6 +55,16 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 
-  # part of FactoryGirl setup 
+  # part of FactoryGirl setup
   config.include FactoryGirl::Syntax::Methods
+
+  # setup to use devise helpers in tests
+  # https://github.com/plataformatec/devise/wiki/How-To:-Test-with-Capybara
+  config.include Warden::Test::Helpers
+  config.before :suite do
+    Warden.test_mode!
+  end
+  config.after :each do
+    Warden.test_reset!
+  end
 end
