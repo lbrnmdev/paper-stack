@@ -11,11 +11,11 @@ feature 'bank account creations' do
     visit '/'
     click_link 'Create Account'
     fill_in 'Account Name', with: 'example account'
-    fill_in 'Starting Balance', with: '1000'
+    # fill_in 'Starting Balance', with: '1000'
     click_button 'Create Account'
     expect(page).to have_content('Account created successfully!')
 
     expect(User.account(id).name).to eq('example account')
-    expect(User.account(id).balance).to eq(1000)
+    expect(User.account(id).balance).to eq(0)
   end
 end
