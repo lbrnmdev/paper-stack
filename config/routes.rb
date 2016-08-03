@@ -1,9 +1,16 @@
 Rails.application.routes.draw do
+  # get 'accounts/index'
+  #
+  # get 'accounts/new'
+
+  resources :accounts
+
   devise_for :users
 
   devise_scope :user do
     authenticated :user do
-      root 'devise/registrations#edit', as: :authenticated_root
+      # root 'devise/registrations#edit', as: :authenticated_root
+      root 'accounts#index', as: :authenticated_root
     end
 
     unauthenticated do
