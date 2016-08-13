@@ -37,6 +37,12 @@ class AccountsController < ApplicationController
     end
   end
 
+  def destroy
+    Account.find(params[:id]).destroy
+    flash[:success] = "Account deleted successfully!"
+    redirect_to accounts_url
+  end
+
   private
 
     def account_params
