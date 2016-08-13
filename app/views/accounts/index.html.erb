@@ -2,3 +2,12 @@
 <p>Find me in app/views/accounts/index.html.erb</p>
 
 <p><%= link_to "Create Account", new_account_path %></p>
+
+<div class="list-group">
+  <% @accounts.each do |account| %>
+    <%= link_to account, :class => "list-group-item" do %>
+      <span class="badge"><%= account.balance %></span>
+      <%= account.name %>
+    <% end %>
+  <% end %>
+</div>
