@@ -1,4 +1,4 @@
 class Transaction < ActiveRecord::Base
   belongs_to :account
-  enum transaction_type: [:deposit, :withdrawal]
+  enum type: [:deposit, :withdrawal]
 end
