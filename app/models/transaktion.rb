@@ -15,6 +15,10 @@ class Transaktion < ActiveRecord::Base
       end
     end
 
+    # grab old transaktion info
+    # update transaktion with new info
+    # reverse existing transaktion prior to update with old transaktion info
+    # apply new transaktion info to owning account
     def update_transaktion
     end
 
