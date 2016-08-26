@@ -5,6 +5,17 @@ Rails.application.routes.draw do
 
   resources :accounts
 
+  # resources :transaktions, only: [:create, :destroy]
+  # post 'transaktions', :to => 'transaktions#deposit', :as => 'deposit'
+  # post 'transaktions', :to => 'transaktions#withdrawal', :as => 'withdrawal'
+
+  resources :transaktions, only:[:create, :destroy] do
+    collection do
+      post :deposit
+      post :withdrawal
+    end
+  end
+
   devise_for :users
 
   devise_scope :user do
