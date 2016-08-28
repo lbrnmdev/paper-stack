@@ -15,8 +15,15 @@ class Account < ActiveRecord::Base
   def withdraw(amount, description="")
     transaktion = self.transaktions.build(amount:amount, description:description)
     Account.transaction do
-      transaktion.withdraw!
+      transaktion.withdrawal!
       decrement!(:balance, amount)
     end
+  end
+
+  # reverse transaktion
+  # ToDo: raise error if none of the conditions are met
+  def reverse transaktion
+    decrement!(:balance, transaktion.amount) if transaktion.deposit?
+    increment!(:balance, transaktion.amount) if transaktion.withdrawal?
   end
 end
