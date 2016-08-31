@@ -7,6 +7,7 @@ class AccountsController < ApplicationController
 
   def show
     @account = Account.find(params[:id])
+    @transaktion = @account.transaktions.build
   end
 
   def new
@@ -43,9 +44,23 @@ class AccountsController < ApplicationController
     redirect_to accounts_url
   end
 
+  def deposit
+    @account = Account.find(params[:id])
+    if @account.deposit(transaktion_params)
+      flash[:success] = "amount added!"
+      redirect_to @account
+    else
+      flash[:danger] = "incomplete!"
+    end
+  end
+
   private
 
     def account_params
       params.require(:account).permit(:name)
+    end
+
+    def transaktion_params
+      params.require(:transaktion).permit(:amount, :description)
     end
 end

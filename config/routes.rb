@@ -3,7 +3,20 @@ Rails.application.routes.draw do
   #
   # get 'accounts/new'
 
-  resources :accounts
+  # resources :accounts do
+  #   member do
+  #     post 'deposit'
+  #   end
+  # end
+  resources :accounts do
+    resources :transaktions, only: [:index, :new] do
+      collection do
+        post :deposit
+        post :withdrawal
+      end
+    end
+  end
+  resources :transaktions, only: [:destroy]
 
   devise_for :users
 

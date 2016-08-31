@@ -3,21 +3,28 @@ class Account < ActiveRecord::Base
   has_many :transaktions
 
   # deposit funds
-  def deposit(amount, description="")
-    transaktion = self.transaktions.build(amount:amount, description:description)
-    Account.transaction do
-      transaktion.deposit!
-      increment!(:balance, amount)
-    end
+  # def deposit(amount, description="")
+  # # def deposit transaktion
+  #   transaktion = self.transaktions.build(amount:amount, description:description)
+  #   Account.transaction do
+  #     transaktion.deposit!
+  #     increment!(:balance, amount)
+  #     # increment!(:balance, transaktion.amount)
+  #   end
+  # end
+
+  # def deposit(amount, description="")
+  # modify to always generate and save a whole new transaktion
+  def deposit(transaktion_params={})
+    transaktion_params = transaktion_params[:transaktion].attributes.inject({}){ |hash, (k, v)| hash.merge( k.to_sym => v )  } if !transaktion_params[:transaktion].nil?
+    new_transaktion = transaktions.build(amount:transaktion_params[:amount], description:transaktion_params[:description])
+    new_transaktion.deposit!
   end
 
-  # withdraw funds
-  def withdraw(amount, description="")
-    transaktion = self.transaktions.build(amount:amount, description:description)
-    Account.transaction do
-      transaktion.withdrawal!
-      decrement!(:balance, amount)
-    end
+  def withdraw(transaktion_params={})
+    transaktion_params = transaktion_params[:transaktion].attributes.inject({}){ |hash, (k, v)| hash.merge( k.to_sym => v )  } if !transaktion_params[:transaktion].nil?
+    new_transaktion = transaktions.build(amount:transaktion_params[:amount], description:transaktion_params[:description])
+    new_transaktion.withdrawal!
   end
 
   # reverse transaktion
