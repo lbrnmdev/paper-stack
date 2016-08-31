@@ -9,10 +9,10 @@ feature 'deposit amount in account' do
   scenario 'with valid amount' do
     visit '/'
     click_link 'example account'
-    click_link 'Deposit funds'
-    fill_in 'amount', with: 10.00
     click_button 'Deposit'
+    fill_in 'deposit amount', with: 10.00
+    click_button 'deposit!'
     expect(page).to have_content('€20.00')
-    expect(Account.find_by(:name => 'example account')).to be == 20.00
+    expect(Account.find_by(:name => 'example account').balance).to be == 20.00
   end
 end

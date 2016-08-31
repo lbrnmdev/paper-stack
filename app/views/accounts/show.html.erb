@@ -46,7 +46,7 @@
       <div class="modal-body">
         <%= form_for @transaktion, :url => deposit_transaktions_path, html: { class: "form-inline", role: "form" } do |f| %>
           <div class="form-group">
-            <%= f.number_field :amount, class: 'form-control', placeholder: 'amount' %>
+            <%= f.number_field :amount, class: 'form-control', placeholder: 'deposit amount' %>
           </div>
           <div class="form-group">
             <%= f.submit 'deposit!', class: 'btn btn-success' %>
@@ -71,7 +71,7 @@
       <div class="modal-body">
         <%= form_for @transaktion, :url => withdrawal_transaktions_path, html: { class: "form-inline", role: "form" } do |f| %>
           <div class="form-group">
-            <%= f.number_field :amount, class: 'form-control', placeholder: 'amount' %>
+            <%= f.number_field :amount, class: 'form-control', placeholder: 'withdrawal amount' %>
           </div>
           <div class="form-group">
             <%= f.submit 'withdraw!', class: 'btn btn-danger' %>

@@ -12,7 +12,6 @@ class TransaktionsController < ApplicationController
   # end
 
   def deposit
-    raise "foobar"
     @transaktion = current_account.transaktions.build(transaktion_params)
     if @transaktion.deposit!
       flash[:success] = "Amount added!"
@@ -23,7 +22,6 @@ class TransaktionsController < ApplicationController
   end
 
   def withdrawal
-    raise "foo"
     @transaktion = current_account.transaktions.build(transaktion_params)
     if @transaktion.withdrawal!
       flash[:success] = "Amount withdrawn!"
