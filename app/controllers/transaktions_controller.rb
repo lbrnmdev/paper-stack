@@ -1,42 +1,32 @@
 class TransaktionsController < ApplicationController
   before_action :authenticate_user!
 
-  # def create
-  #   @transaktion = current_account.transaktions.build(transaktion_params)
-  #   if @transaktion.save!
-  #     flash[:success] = "Transaction added!"
-  #     redirect_to current_account
-  #   else
-  #     flash[:danger] = "incomplete!"
-  #   end
-  # end
-
   def deposit
-    @transaktion = current_account.transaktions.build(transaktion_params)
-    if @transaktion.deposit!
+    @account = Account.find(params[:account_id])
+    # @transaktion = @account.transaktions.build(transaktion_params)
+    # if @account.deposit(@transaktion)
+    if @account.deposit(transaktion_params)
       flash[:success] = "Amount added!"
-      redirect_to current_account
+      redirect_to @account
     else
       flash[:danger] = "incomplete!"
     end
   end
 
   def withdrawal
-    @transaktion = current_account.transaktions.build(transaktion_params)
-    if @transaktion.withdrawal!
-      flash[:success] = "Amount withdrawn!"
-      redirect_to current_account
+    @account = Account.find(params[:account_id])
+    # @transaktion = @account.transaktions.build(transaktion_params)
+    if @account.withdraw(transaktion_params)
+      flash[:success] = "Amount deducted!"
+      redirect_to @account
     else
       flash[:danger] = "incomplete!"
     end
   end
 
-  def destroy
-  end
-
   private
 
     def transaktion_params
-      params.require(:transaktion).permit(:amount, :description, :transaktion_type)
+      params.require(:transaktion).permit(:amount, :description)
     end
 end

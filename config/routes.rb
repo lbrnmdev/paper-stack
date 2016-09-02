@@ -1,20 +1,14 @@
 Rails.application.routes.draw do
-  # get 'accounts/index'
-  #
-  # get 'accounts/new'
 
-  resources :accounts
-
-  # resources :transaktions, only: [:create, :destroy]
-  # post 'transaktions', :to => 'transaktions#deposit', :as => 'deposit'
-  # post 'transaktions', :to => 'transaktions#withdrawal', :as => 'withdrawal'
-
-  resources :transaktions, only:[:create, :destroy] do
-    collection do
-      post :deposit
-      post :withdrawal
+  resources :accounts do
+    resources :transaktions, only: [:index, :new] do
+      collection do
+        post :deposit
+        post :withdrawal
+      end
     end
   end
+  resources :transaktions, only: [:destroy]
 
   devise_for :users
 

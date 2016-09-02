@@ -44,7 +44,7 @@
         <h4 class="modal-title" id="myModalLabel">Deposit funds</h4>
       </div>
       <div class="modal-body">
-        <%= form_for @transaktion, :url => deposit_transaktions_path, html: { class: "form-inline", role: "form" } do |f| %>
+        <%= form_for [@account, @transaktion], :url => deposit_account_transaktions_path(@account), html: { class: "form-inline", role: "form" } do |f| %>
           <div class="form-group">
             <%= f.number_field :amount, class: 'form-control', placeholder: 'deposit amount' %>
           </div>
@@ -69,7 +69,7 @@
         <h4 class="modal-title" id="myModalLabel">Withdraw funds</h4>
       </div>
       <div class="modal-body">
-        <%= form_for @transaktion, :url => withdrawal_transaktions_path, html: { class: "form-inline", role: "form" } do |f| %>
+        <%= form_for [@account, @transaktion], :url => withdrawal_account_transaktions_path(@account), html: { class: "form-inline", role: "form" } do |f| %>
           <div class="form-group">
             <%= f.number_field :amount, class: 'form-control', placeholder: 'withdrawal amount' %>
           </div>

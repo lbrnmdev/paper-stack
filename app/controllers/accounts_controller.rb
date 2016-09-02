@@ -7,9 +7,7 @@ class AccountsController < ApplicationController
 
   def show
     @account = Account.find(params[:id])
-    set_current_account(@account)
     @transaktion = @account.transaktions.build
-    # @transaktion = current_account.transaktions.build
   end
 
   def new

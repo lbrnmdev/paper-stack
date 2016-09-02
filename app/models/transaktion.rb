@@ -1,38 +1,25 @@
 class Transaktion < ActiveRecord::Base
   belongs_to :account
   enum transaktion_type: [:deposit, :withdrawal]
+  validates :amount, presence:true, numericality: {greater_than_or_equal_to:0}
+  validates_presence_of :account
+  validates_presence_of :transaktion_type
   after_create :insert_transaktion
-  before_destroy :destroy_transaktion
+  before_destroy :reverse_on_account
 
   private
 
     def insert_transaktion
-      if self.deposit?
-        raise ActiveRecord::Rollback unless self.account.increment!(:balance, self.amount)
-      end
-      if self.withdrawal?
-        raise ActiveRecord::Rollback unless self.account.decrement!(:balance, self.amount)
-      end
+     if self.deposit?
+       raise ActiveRecord::Rollback unless self.account.increment!(:balance, self.amount)
+     end
+     if self.withdrawal?
+       raise ActiveRecord::Rollback unless self.account.decrement!(:balance, self.amount)
+     end
     end
 
-    # grab old transaktion info
-    # update transaktion with new info
-    # reverse existing transaktion prior to update with old transaktion info
-    # apply new transaktion info to owning account
-    def update_transaktion
-    end
-
-    # what if destroy action fails? i.e transaction on account successfully reversed but Transaktion isn't deleted?
-    def destroy_transaktion
-      unless self.destroyed?
-        if self.deposit?
-          # reverse
-          raise ActiveRecord::Rollback unless self.account.decrement!(:balance, self.amount)
-        end
-        if self.withdrawal?
-          # reverse
-          raise ActiveRecord::Rollback unless self.account.increment!(:balance, self.amount)
-        end
-      end
+    # reverse transaction on parent account
+    def reverse_on_account
+      account.reverse(self)
     end
 end
