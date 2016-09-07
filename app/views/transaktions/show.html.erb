@@ -1,0 +1,12 @@
+<h1>Transaktions#show</h1>
+<p>Find me in app/views/transaktions/show.html.erb</p>
+
+<h2>Account name: <%= @transaktion.account.name %></h2>
+<h2>Current balance: <%= number_to_currency(@transaktion.account.balance, unit: "€", separator: ".", delimiter: "") %></h2>
+
+<h2>Transaction type: <%= @transaktion.transaktion_type %></h2>
+<h2>Transaction amount: <%= number_to_currency(@transaktion.amount, unit: "€", separator: ".", delimiter: "") %></h2>
+
+<%= link_to "Delete", @transaktion, method: :delete, data: {confirm: "Delete this transaktion of \"#{@transaktion.amount}\"?"} %>
+||
+<%= link_to "Back to Account", account_path(@transaktion.account) %>

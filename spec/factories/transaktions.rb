@@ -1,8 +1,8 @@
 FactoryGirl.define do
   factory :transaktion do
-    amount "9.99"
-    description "MyString"
-    transaktion_type 1
+    amount 5.0
+    description "deposit of five"
+    transaktion_type 0 
     account nil
   end
 end

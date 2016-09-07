@@ -23,17 +23,6 @@ ActiveRecord::Schema.define(version: 20160819125152) do
 
   add_index "accounts", ["user_id"], name: "index_accounts_on_user_id"
 
-  create_table "transactions", force: :cascade do |t|
-    t.string   "description"
-    t.decimal  "amount"
-    t.integer  "transaction_type"
-    t.integer  "account_id"
-    t.datetime "created_at",       null: false
-    t.datetime "updated_at",       null: false
-  end
-
-  add_index "transactions", ["account_id"], name: "index_transactions_on_account_id"
-
   create_table "transaktions", force: :cascade do |t|
     t.decimal  "amount"
     t.string   "description"

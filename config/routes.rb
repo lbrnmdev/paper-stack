@@ -1,14 +1,14 @@
 Rails.application.routes.draw do
 
   resources :accounts do
-    resources :transaktions, only: [:index, :new] do
+    resources :transaktions, only: [:index] do
       collection do
         post :deposit
         post :withdrawal
       end
     end
   end
-  resources :transaktions, only: [:destroy]
+  resources :transaktions, only: [:show, :destroy]
 
   devise_for :users
 

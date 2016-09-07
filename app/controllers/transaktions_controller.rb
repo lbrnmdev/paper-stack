@@ -1,6 +1,10 @@
 class TransaktionsController < ApplicationController
   before_action :authenticate_user!
 
+  def show
+    @transaktion = Transaktion.find(params[:id])
+  end
+
   def deposit
     @account = Account.find(params[:account_id])
     # @transaktion = @account.transaktions.build(transaktion_params)
