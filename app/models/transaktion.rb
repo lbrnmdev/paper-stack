@@ -1,6 +1,7 @@
 class Transaktion < ActiveRecord::Base
   belongs_to :account
   enum transaktion_type: [:deposit, :withdrawal]
+  default_scope -> { order(created_at: :desc) }
   validates :amount, presence:true, numericality: {greater_than_or_equal_to:0}
   validates_presence_of :account
   validates_presence_of :transaktion_type
