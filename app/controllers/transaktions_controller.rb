@@ -28,6 +28,14 @@ class TransaktionsController < ApplicationController
     end
   end
 
+  def destroy
+    @transaktion = Transaktion.find(params[:id])
+    parent_account = @transaktion.account
+    @transaktion.destroy!
+    flash[:success] = "Transaction deleted!"
+    redirect_to parent_account
+  end
+
   private
 
     def transaktion_params

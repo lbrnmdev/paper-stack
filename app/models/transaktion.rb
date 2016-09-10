@@ -18,8 +18,13 @@ class Transaktion < ActiveRecord::Base
      end
     end
 
-    # reverse transaction on parent account
+    # reverse transaction on parent account it transaktion not already destroyed
     def reverse_on_account
-      account.reverse(self)
+      if self.destroyed?
+        errors[:base] << "Cannot destroy already destroyed Transaktion"
+        return false
+      else
+        account.reverse(self)
+      end
     end
 end
