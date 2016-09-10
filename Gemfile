@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-
+# specify ruby version for Heroku
+ruby "2.3.0"
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.6'
 # Use sqlite3 as the database for Active Record
@@ -28,6 +29,9 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 # Use Unicorn as the app server
 # gem 'unicorn'
+
+# Use Puma as the app server
+gem 'puma'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
@@ -61,4 +65,12 @@ group :development do
 
   # Better Errors replaces the standard Rails error page with a much better and more useful error page.
   gem 'better_errors'
+end
+
+group :production do
+  # use postgres
+  gem 'pg', '~> 0.18.4'
+
+  # necessary to enable features such as static asset serving and logging on Heroku for rails 4
+  gem 'rails_12factor'
 end
