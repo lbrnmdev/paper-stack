@@ -43,8 +43,8 @@
   <tbody>
     <% @account.transaktions.each do |transaktion| %>
       <tr>
-        <td><%= transaktion.created_at %></td>
-        <td><%= link_to transaktion.description, transaktion_path(transaktion) %></td>
+        <td><%= transaktion.created_at.strftime("%a, %b %d, %Y at %I:%M:%S%p %Z") %></td>
+        <td><%= link_to((transaktion.description.blank? ? '乁(ツ)ㄏ' : transaktion.description), transaktion_path(transaktion)) %></td>
         <td><%= transaktion.amount %></td>
         <td><%= transaktion.transaktion_type %></td>
       </tr>
@@ -61,8 +61,13 @@
         <h4 class="modal-title" id="myModalLabel">Deposit funds</h4>
       </div>
       <div class="modal-body">
-        <%= form_for [@account, @account.transaktions.build], :url => deposit_account_transaktions_path(@account), html: { class: "form-inline", role: "form" } do |f| %>
+        <%= form_for [@account, @account.transaktions.build], :url => deposit_account_transaktions_path(@account), html: { class: "form-group", role: "form" } do |f| %>
           <div class="form-group">
+            <%= f.label :description %>
+            <%= f.text_field :description, class: 'form-control', placeholder: 'description of deposit' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :amount %>
             <%= f.number_field :amount, class: 'form-control', placeholder: 'deposit amount' %>
           </div>
           <div class="form-group">
@@ -86,8 +91,13 @@
         <h4 class="modal-title" id="myModalLabel">Withdraw funds</h4>
       </div>
       <div class="modal-body">
-        <%= form_for [@account, @account.transaktions.build], :url => withdrawal_account_transaktions_path(@account), html: { class: "form-inline", role: "form" } do |f| %>
+        <%= form_for [@account, @account.transaktions.build], :url => withdrawal_account_transaktions_path(@account), html: { class: "form-group", role: "form" } do |f| %>
           <div class="form-group">
+            <%= f.label :description %>
+            <%= f.text_field :description, class: 'form-control', placeholder: 'description of withdrawal' %>
+          </div>
+          <div class="form-group">
+            <%= f.label :amount %>
             <%= f.number_field :amount, class: 'form-control', placeholder: 'withdrawal amount' %>
           </div>
           <div class="form-group">
