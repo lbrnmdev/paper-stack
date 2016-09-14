@@ -8,13 +8,21 @@
 </head>
 <body>
 
+  <!-- Navbar -->
   <%= render 'shared/navbar' %>
 
-  <% flash.each do |name, msg| %>
-    <%= content_tag :div, msg, class: [:alert, alert_for(name)] %>
-  <% end %>
+  <!-- page content -->
+  <div class="container">
 
-<%= yield %>
+    <!-- flash alerts -->
+    <% flash.each do |name, msg| %>
+      <%= content_tag :div, msg, class: [:alert, alert_for(name)] %>
+    <% end %>
+
+    <!-- yield view content -->
+    <%= yield %>
+
+  </div>
 
 </body>
 </html>
