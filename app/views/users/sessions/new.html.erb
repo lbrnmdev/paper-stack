@@ -9,12 +9,12 @@
       <div class="col-md-12">
         <%= form_for(resource, as: resource_name, url: session_path(resource_name), html: {class: "form-group"}) do |f| %>
           <div class="form-group">
-            <%= f.label :email, class: "control-label" %><br />
+            <%= f.label :email, class: "control-label" %>
             <%= f.email_field :email, autofocus: true, class: "form-control" %>
           </div>
 
           <div class="form-group">
-            <%= f.label :password, class: "control-label" %><br />
+            <%= f.label :password, class: "control-label" %>
             <%= f.password_field :password, autocomplete: "off", class: "form-control" %>
           </div>
 
