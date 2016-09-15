@@ -9,14 +9,14 @@ feature 'bank account creations' do
 
   scenario 'user can create a bank account' do
     visit '/'
-    click_link 'Create Account'
+    click_link 'Create a new account'
     fill_in 'Account Name', with: 'example'
     # fill_in 'Starting Balance', with: '1000'
     click_button 'Create Account'
     expect(page).to have_content('example account created!')
 
     # expect index page to show created account information
-    
+
 
     expect(Account.last.name).to eq('example')
     expect(Account.last.balance).to eq(0)
