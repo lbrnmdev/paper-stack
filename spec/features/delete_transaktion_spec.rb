@@ -16,6 +16,6 @@ feature 'withdraw amount from account' do
     click_link 'Delete'
     expect(page).to have_content('Transaction deleted!')
     expect(page).to_not have_content('deposit of five')
-    expect(page).to have_content('Current balance: €10.00')
+    expect(page).to have_content('Current balance is €10.00')
   end
 end

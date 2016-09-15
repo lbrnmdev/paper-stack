@@ -1,56 +1,62 @@
-<h1>Accounts#show</h1>
-<p>Find me in app/views/accounts/show.html.erb</p>
+<div class="row">
 
-<h2>Account name: <%= @account.name %></h2>
-<h2>Current balance: <%= number_to_currency(@account.balance, unit: "€", separator: ".", delimiter: "") %></h2>
+  <div class="col-md-4">
 
-<%= link_to "Edit account info", edit_account_path %>
-||
-<%= link_to "Delete account", @account, method: :delete, data: {confirm: "Delete \"#{@account.name}\" account?"} %>
-||
-<%= link_to "Back to Accounts", accounts_path %>
+    <h1>Account: <em><%= @account.name %></em></h1>
+    <p class="lead">Current balance is <em><%= number_to_currency(@account.balance, unit: "€", seperator: ".", delimiter: "") %></em></p>
 
-<p></p>
+    <hr>
 
-<%= link_to "Deposit funds", '#'%>
-||
-<%= link_to "Withdraw funds", '#'%>
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#depositModal">
+          Deposit
+        </button>
+      </div>
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#withdrawalModal">
+          Withdraw
+        </button>
+      </div>
+    </div>
 
-<div class="btn-group btn-group-justified" role="group" aria-label="...">
-  <div class="btn-group" role="group">
-    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#depositModal">
-      Deposit
-    </button>
+    <hr>
+
+    <div class="row">
+    <div class="btn-group btn-group-justified" role="group" aria-label="...">
+      <%= link_to "Edit account info", edit_account_path, class: 'btn' %>
+      <%= link_to "Delete account", @account, method: :delete, data: {confirm: "Delete \"#{@account.name}\" account?"}, class: 'btn' %>
+      <%= link_to "Back to Accounts", accounts_path, class: 'btn' %>
+    </div>
+    </div>
+
   </div>
-  <div class="btn-group" role="group">
-    <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#withdrawalModal">
-      Withdraw
-    </button>
+
+  <div class="col-md-8">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Desciption</th>
+          <th>Amount</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @account.transaktions.each do |transaktion| %>
+          <tr>
+            <td><%= transaktion.created_at.strftime("%a, %b %d, %Y at %I:%M:%S%p %Z") %></td>
+            <td><%= link_to((transaktion.description.blank? ? '乁(ツ)ㄏ' : transaktion.description), transaktion_path(transaktion)) %></td>
+            <td><%= number_to_currency(transaktion.amount, unit: "€", seperator: ".", delimiter: "") %></td>
+            <td><%= transaktion.transaktion_type %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
   </div>
+
 </div>
 
-<p></p>
-
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th>Date</th>
-      <th>Desciption</th>
-      <th>Amount<th>
-      <th>Type<th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @account.transaktions.each do |transaktion| %>
-      <tr>
-        <td><%= transaktion.created_at.strftime("%a, %b %d, %Y at %I:%M:%S%p %Z") %></td>
-        <td><%= link_to((transaktion.description.blank? ? '乁(ツ)ㄏ' : transaktion.description), transaktion_path(transaktion)) %></td>
-        <td><%= transaktion.amount %></td>
-        <td><%= transaktion.transaktion_type %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
 
 <!-- Deposit Modal -->
 <div class="modal fade" id="depositModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
