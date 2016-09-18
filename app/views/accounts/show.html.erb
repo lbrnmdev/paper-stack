@@ -48,7 +48,7 @@
             <td><%= transaktion.created_at.strftime("%a, %b %d, %Y at %I:%M:%S%p %Z") %></td>
             <td><%= link_to((transaktion.description.blank? ? '乁(ツ)ㄏ' : transaktion.description), transaktion_path(transaktion)) %></td>
             <td><%= number_to_currency(transaktion.amount, unit: "€", seperator: ".", delimiter: "") %></td>
-            <td><%= transaktion.transaktion_type %></td>
+            <td class="<%= transaktion.transaktion_type == "deposit" ? "success" : "danger" %>"><%= transaktion.transaktion_type %></td>
           </tr>
         <% end %>
       </tbody>
