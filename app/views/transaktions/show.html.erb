@@ -1,12 +1,31 @@
-<h1>Transaktions#show</h1>
-<p>Find me in app/views/transaktions/show.html.erb</p>
+<div class="row">
+  <div class="col-md-4">
+    <h1>Account: <em><%= @transaktion.account.name %></em></h1>
+    <p class="lead">Current balance is <em><%= number_to_currency(@transaktion.account.balance, unit: "€", seperator: ".", delimiter: "") %></em></p>
+  </div>
 
-<h2>Account name: <%= @transaktion.account.name %></h2>
-<h2>Current balance: <%= number_to_currency(@transaktion.account.balance, unit: "€", separator: ".", delimiter: "") %></h2>
+  <div class="col-md-8">
+    <div class="page-header">
+      <h1>Transaction</h1>
+      <p class="lead text-<%= @transaktion.transaktion_type == "deposit" ? "success" : "danger" %>">
+        <%= @transaktion.transaktion_type.capitalize %> on <%= @transaktion.created_at.strftime("%a, %b %d, %Y at %I:%M:%S%p %Z") %>
+      </p>
+    </div>
 
-<h2>Transaction type: <%= @transaktion.transaktion_type %></h2>
-<h2>Transaction amount: <%= number_to_currency(@transaktion.amount, unit: "€", separator: ".", delimiter: "") %></h2>
+    <div class="row">
+      <div class="col-md-12">
 
-<%= link_to "Delete", @transaktion, method: :delete, data: {confirm: "Delete this transaktion of \"#{@transaktion.amount}\"?"} %>
-||
-<%= link_to "Back to Account", account_path(@transaktion.account) %>
+        <h2><small>Amount: </small><%= number_to_currency(@transaktion.amount, unit: "€", seperator: ".", delimiter: "") %></h2>
+        <h2><small>Description: </small><%= @transaktion.description %></h2>
+
+        <hr>
+
+        <div class="btn-group btn-group-justified" role="group" aria-label="...">
+          <%= link_to "Delete", @transaktion, method: :delete, data: {confirm: "Delete this transaktion of \"#{@transaktion.amount}\"?"}, class: 'btn btn-danger' %>
+          <%= link_to "Back to Account", account_path(@transaktion.account), class: 'btn btn-default' %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
