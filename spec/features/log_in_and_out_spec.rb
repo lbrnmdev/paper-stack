@@ -18,7 +18,7 @@ feature 'Log ins' do
     fill_in 'Email', with: 'user@example.com'
     fill_in 'Password', with: 'password'
     click_button 'Log in'
-    click_link 'logout'
+    click_link 'Logout'
     expect(page).to have_content("Signed out successfully.")
     # expect page to have log in link
     # expect attempt to visit account info to redirect to login page
