@@ -1,16 +1,16 @@
 class AccountsController < ApplicationController
   before_action :authenticate_user!
+  before_action :owner_user, only: [:show, :edit, :update, :destroy]
 
   def index
     @accounts = current_user.accounts
   end
 
   def show
-    @account = Account.find(params[:id])
   end
 
   def new
-    @account = Account.new
+    @account = current_user.accounts.new
   end
 
   def create
@@ -24,11 +24,9 @@ class AccountsController < ApplicationController
   end
 
   def edit
-    @account = Account.find(params[:id])
   end
 
   def update
-    @account = Account.find(params[:id])
     if @account.update_attributes(account_params)
       flash[:success] = "Account info updated!"
       redirect_to @account
@@ -38,7 +36,7 @@ class AccountsController < ApplicationController
   end
 
   def destroy
-    Account.find(params[:id]).destroy
+    @account.destroy!
     flash[:success] = "Account deleted successfully!"
     redirect_to accounts_url
   end
@@ -47,5 +45,10 @@ class AccountsController < ApplicationController
 
     def account_params
       params.require(:account).permit(:name)
+    end
+
+    def owner_user
+      @account = Account.find_by(id: params[:id])
+      redirect_to authenticated_root_url if (@account.nil? || @account.user != current_user)
     end
 end
