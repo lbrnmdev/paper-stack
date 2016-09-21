@@ -2,18 +2,98 @@ require 'rails_helper'
 
 RSpec.describe AccountsController, type: :controller do
 
+  # Seems like controller testing is on it's way
+  # out (assigns, render_template being deprecated) sooo..
+  # TODO: refactor to only check for html status responses
   describe "GET #index" do
-    it "returns http success" do
-      get :index
-      expect(response).to have_http_status(:success)
+    context "while logged out" do
+      it "redirects to the login template" do
+        get :index
+        expect(response).to redirect_to '/users/sign_in'
+      end
+    end
+
+    context "while logged in" do
+      let(:user) {create(:user)}
+      let(:accounts) {create_list(:account, 5, user: user)}
+      before do
+        sign_in user
+        get :index
+      end
+      it "renders the index page" do
+        expect(response).to render_template :index
+      end
+      it "assigns user's accounts to @accounts" do
+        expect(assigns(:accounts)).to match_array accounts
+      end
     end
   end
 
+
   describe "GET #new" do
-    it "returns http success" do
-      get :new
-      expect(response).to have_http_status(:success)
+    context "while logged out" do
+      it "returns http redirect" do
+        get :new
+        expect(response).to have_http_status(:redirect)
+      end
     end
+
+    context "while logged in" do
+      let(:user) {create(:user)}
+      before do
+        sign_in user
+        get :new
+      end
+      it "returns http success" do
+        expect(response).to have_http_status(:success)
+      end
+    end
+  end
+
+  describe "GET #show" do
+    context "while logged out" do
+      let(:account) {create(:account)}
+      it "returns http redirect" do
+        get :show, id: account
+        expect(response).to have_http_status(:redirect)
+      end
+    end
+
+    context "while logged in" do
+      let(:user) {create(:user)}
+      let(:other_user) {create(:user, email: "other_user@example.com")}
+      let(:account) {create(:account, user: user)}
+      let(:other_users_account) {create(:account, user:other_user)}
+      before do
+        sign_in user
+      end
+
+      it "returns http success when logged in user owns account" do
+        get :show, id: account
+        expect(response).to have_http_status(:success)
+      end
+
+      it "returns http redirect when logged in user doesn't own account" do
+        get :show, id: other_users_account
+        expect(response).to have_http_status(:redirect)
+      end
+    end
+  end
+
+  describe "GET #edit" do
+
+  end
+
+  describe "POST #create" do
+
+  end
+
+  describe "PUT #update" do
+
+  end
+
+  describe "DELETE #destroy" do
+    
   end
 
 end
