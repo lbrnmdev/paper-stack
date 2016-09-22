@@ -2,6 +2,12 @@ require 'rails_helper'
 
 RSpec.describe AccountsController, type: :controller do
 
+  # create users and accounts for testing
+  let(:user) {create(:user)}
+  let(:other_user) {create(:user, email: "other_user@example.com")}
+  let(:account) {create(:account, user: user)}
+  let(:other_users_account) {create(:account, user:other_user)}
+
   # Seems like controller testing is on it's way
   # out (assigns, render_template being deprecated) sooo..
   # TODO: refactor to only check for html status responses
@@ -14,7 +20,6 @@ RSpec.describe AccountsController, type: :controller do
     end
 
     context "while logged in" do
-      let(:user) {create(:user)}
       let(:accounts) {create_list(:account, 5, user: user)}
       before do
         sign_in user
@@ -29,7 +34,6 @@ RSpec.describe AccountsController, type: :controller do
     end
   end
 
-
   describe "GET #new" do
     context "while logged out" do
       it "returns http redirect" do
@@ -39,7 +43,6 @@ RSpec.describe AccountsController, type: :controller do
     end
 
     context "while logged in" do
-      let(:user) {create(:user)}
       before do
         sign_in user
         get :new
@@ -52,7 +55,6 @@ RSpec.describe AccountsController, type: :controller do
 
   describe "GET #show" do
     context "while logged out" do
-      let(:account) {create(:account)}
       it "returns http redirect" do
         get :show, id: account
         expect(response).to have_http_status(:redirect)
@@ -60,10 +62,6 @@ RSpec.describe AccountsController, type: :controller do
     end
 
     context "while logged in" do
-      let(:user) {create(:user)}
-      let(:other_user) {create(:user, email: "other_user@example.com")}
-      let(:account) {create(:account, user: user)}
-      let(:other_users_account) {create(:account, user:other_user)}
       before do
         sign_in user
       end
@@ -81,7 +79,28 @@ RSpec.describe AccountsController, type: :controller do
   end
 
   describe "GET #edit" do
+    context "while logged out" do
+      it "returns http redirect" do
+        get :edit, id: account
+        expect(response).to have_http_status(:redirect)
+      end
+    end
 
+    context "while logged in" do
+      before do
+        sign_in user
+      end
+
+      it "returns http success when logged in user owns account" do
+        get :edit, id: account
+        expect(response).to have_http_status(:success)
+      end
+
+      it "returns http redirect when logged in user doesn't own account" do
+        get :edit, id: other_users_account
+        expect(response).to have_http_status(:redirect)
+      end
+    end
   end
 
   describe "POST #create" do
@@ -93,7 +112,7 @@ RSpec.describe AccountsController, type: :controller do
   end
 
   describe "DELETE #destroy" do
-    
+
   end
 
 end
