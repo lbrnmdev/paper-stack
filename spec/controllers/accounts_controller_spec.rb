@@ -104,7 +104,22 @@ RSpec.describe AccountsController, type: :controller do
   end
 
   describe "POST #create" do
+    context "while logged out" do
+      it "doesn't change number of accounts and returns http redirect" do
+        expect{post :create, account: FactoryGirl.attributes_for(:account)}.to change{Account.count}.by(0)
+        expect(response).to have_http_status(:redirect)
+      end
+    end
 
+    context "while logged in" do
+      before do
+        sign_in user
+      end
+
+      it "increases number of accounts by 1" do
+        expect{post :create, account: FactoryGirl.attributes_for(:account)}.to change{Account.count}.by(1)
+      end
+    end
   end
 
   describe "PUT #update" do
