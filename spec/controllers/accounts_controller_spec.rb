@@ -123,7 +123,30 @@ RSpec.describe AccountsController, type: :controller do
   end
 
   describe "PUT #update" do
+    context "while logged out" do
+      it "doesn't modify account and returns http redirect" do
+        expect{put :update, id:account, account: FactoryGirl.attributes_for(:account)}.to_not change{account.name}
+        expect(response).to have_http_status(:redirect)
+      end
+    end
 
+    context "while logged in" do
+      before do
+        sign_in user
+      end
+
+      it "modifies account" do
+        put :update, id:account, account: FactoryGirl.attributes_for(:account, name: "new name")
+        expect{account.reload}.to change{account.name}
+        expect(account.reload.name).to eq("new name")
+      end
+
+      it "doesn't modify account belonging to another user" do
+        put :update, id:other_users_account, account: FactoryGirl.attributes_for(:account, name: "new name")
+        expect{account.reload}.to_not change{account.name}
+        expect(account.reload.name).to_not eq("new name")
+      end
+    end
   end
 
   describe "DELETE #destroy" do
