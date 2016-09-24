@@ -1,5 +1,7 @@
 require 'rails_helper'
 
+# TODO Implement testing for actions using invalid attributes
+
 RSpec.describe AccountsController, type: :controller do
 
   # create users and accounts for testing
@@ -150,7 +152,30 @@ RSpec.describe AccountsController, type: :controller do
   end
 
   describe "DELETE #destroy" do
+    before do
+      @to_be_deleted = create(:account, user:user)
+    end
+    context "while logged out" do
+      it "doesn't delete account and returns http redirect" do
+        expect{delete :destroy, id:@to_be_deleted}.to_not change{Account.count}
+        expect(response).to have_http_status(:redirect)
+      end
+    end
 
+    context "while logged in" do
+      before do
+        sign_in user
+      end
+
+      it "deletes account" do
+        expect{delete :destroy, id:@to_be_deleted}.to change{Account.count}.by(-1)
+      end
+
+      it "doesn't delete account belonging to another user" do
+        @other_users_to_be_deleted = create(:account, user:other_user)
+        expect{delete :destroy, id:@other_users_to_be_deleted}.to_not change{Account.count}
+      end
+    end
   end
 
 end
