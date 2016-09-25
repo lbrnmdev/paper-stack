@@ -10,7 +10,7 @@ Rails.application.routes.draw do
   end
   resources :transaktions, only: [:show, :destroy]
 
-  devise_for :users
+  devise_for :users, controllers: { sessions: 'users/sessions' }
 
   devise_scope :user do
     authenticated :user do
