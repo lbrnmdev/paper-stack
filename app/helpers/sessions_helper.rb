@@ -16,7 +16,6 @@ module SessionsHelper
         http.request(Net::HTTP::Get.new(uri.request_uri))
       }
       parsed_zone = JSON.parse(response.body)["time_zone"]
-      logger.info "stepped into after parsed_zone: current_user ip us #{current_user.current_sign_in_ip}"
       logger.info "stepped into after parsed_zone: time zone is #{parsed_zone}"
       zone = parsed_zone unless parsed_zone == ( "" || nil )
     rescue StandardError, Net::ReadOpenTimeout, Net::ReadTimeout => e
