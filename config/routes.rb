@@ -1,12 +1,11 @@
 Rails.application.routes.draw do
 
   resources :accounts do
-    resources :transaktions, only: [:index] do
-      collection do
-        post :deposit
-        post :withdrawal
-      end
+    member do
+      patch :deposit
+      patch :withdraw
     end
+    resources :transaktions, only: [:index]
   end
   resources :transaktions, only: [:show, :destroy]
 

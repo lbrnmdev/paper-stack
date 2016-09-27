@@ -67,7 +67,7 @@
         <h4 class="modal-title" id="myModalLabel">Deposit funds</h4>
       </div>
       <div class="modal-body">
-        <%= form_for [@account, @account.transaktions.build], :url => deposit_account_transaktions_path(@account), html: { class: "form-group", role: "form" } do |f| %>
+        <%= form_for @account.transaktions.build, :url => deposit_account_path(@account), html: { method: "patch", class: "form-group", role: "form" } do |f| %>
           <div class="form-group">
             <%= f.label :description %>
             <%= f.text_field :description, class: 'form-control', placeholder: 'description of deposit' %>
@@ -97,7 +97,7 @@
         <h4 class="modal-title" id="myModalLabel">Withdraw funds</h4>
       </div>
       <div class="modal-body">
-        <%= form_for [@account, @account.transaktions.build], :url => withdrawal_account_transaktions_path(@account), html: { class: "form-group", role: "form" } do |f| %>
+        <%= form_for @account.transaktions.build, :url => withdraw_account_path(@account), html: { method: "patch", class: "form-group", role: "form" } do |f| %>
           <div class="form-group">
             <%= f.label :description %>
             <%= f.text_field :description, class: 'form-control', placeholder: 'description of withdrawal' %>

@@ -1,6 +1,6 @@
 class AccountsController < ApplicationController
   before_action :authenticate_user!
-  before_action :owner_user, only: [:show, :edit, :update, :destroy]
+  before_action :owner_user, only: [:show, :edit, :update, :destroy, :deposit, :withdraw]
 
   def index
     @accounts = current_user.accounts
@@ -41,14 +41,36 @@ class AccountsController < ApplicationController
     redirect_to accounts_url
   end
 
+  def deposit
+    if @account.deposit(transaktion_params)
+      flash[:success] = "Amount added!"
+      redirect_to @account
+    else
+      flash[:danger] = "incomplete!"
+    end
+  end
+
+  def withdraw
+    if @account.withdraw(transaktion_params)
+      flash[:success] = "Amount deducted!"
+      redirect_to @account
+    else
+      flash[:danger] = "incomplete!"
+    end
+  end
+
   private
 
     def account_params
       params.require(:account).permit(:name)
     end
 
+    def transaktion_params
+      params.require(:transaktion).permit(:amount, :description)
+    end
+
     def owner_user
-      @account = Account.find_by(id: params[:id])
+      @account = Account.find_by(id: params[:id]) || Account.find_by(id: params[:account_id])
       redirect_to authenticated_root_url if (@account.nil? || @account.user != current_user)
     end
 end
