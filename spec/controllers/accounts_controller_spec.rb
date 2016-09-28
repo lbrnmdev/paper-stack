@@ -178,4 +178,50 @@ RSpec.describe AccountsController, type: :controller do
     end
   end
 
+  describe "PATCH #deposit" do
+    context "while logged out" do
+      it "doesn't make deposit and returns http redirect" do
+        expect {patch :deposit, id:account, :transaktion=>{amount:5, description:"not logged in"}}.to_not change{account.balance}
+        expect(response).to have_http_status(:redirect)
+      end
+    end
+
+    context "while logged in" do
+      before do
+        sign_in user
+      end
+
+      it "doesn't make deposit on account belonging to another user" do
+        expect {patch :deposit, id:other_users_account, :transaktion=>{amount:5, description:"account belongs to other_user"}}.to_not change{account.balance}
+      end
+
+      it "makes deposit" do
+        expect {patch :deposit, id:account, :transaktion=>{amount:5, description:"account belongs user"} }.to change{account.reload.balance}.by(5)
+      end
+    end
+  end
+
+  describe "PATCH #withdraw" do
+    context "while logged out" do
+      it "doesn't make withdrawal and returns http redirect" do
+        expect {patch :withdraw, id:account, :transaktion=>{amount:5, description:"not logged in"}}.to_not change{account.balance}
+        expect(response).to have_http_status(:redirect)
+      end
+    end
+
+    context "while logged in" do
+      before do
+        sign_in user
+      end
+
+      it "doesn't make withdrawal on account belonging to another user" do
+        expect {patch :withdraw, id:other_users_account, :transaktion=>{amount:5, description:"account belongs to other_user"}}.to_not change{account.balance}
+      end
+
+      it "makes withdrawal" do
+        expect {patch :withdraw, id:account, :transaktion=>{amount:5, description:"account belongs user"} }.to change{account.reload.balance}.by(-5)
+      end
+    end
+  end
+
 end
