@@ -34,4 +34,29 @@ RSpec.describe TransaktionsController, type: :controller do
     end
   end
 
+  describe "DELETE #destroy" do
+    before do
+      @transaktion_to_be_deleted = create(:transaktion, account: account)
+    end
+
+    context "while logged out" do
+      it "doesn't delete transaktion" do
+        expect{ delete :destroy, id: @transaktion_to_be_deleted }.to_not change{Transaktion.count}
+      end
+    end
+
+    context "while logged in" do
+      before do
+        sign_in user
+      end
+      it "doesn't delete transaktion belonging to different user" do
+        @other_transaktion_to_be_deleted = create(:account, user:other_user)
+        expect{ delete :destroy, id: @other_transaktion_to_be_deleted }.to_not change{Transaktion.count}
+      end
+      it "deletes transaktion" do
+        expect{ delete :destroy, id: @transaktion_to_be_deleted }.to change{Transaktion.count}.by(-1)
+      end
+    end
+  end
+
 end
