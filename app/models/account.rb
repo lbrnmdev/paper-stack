@@ -5,7 +5,11 @@ class Account < ActiveRecord::Base
   def deposit(transaktion_params={})
     transaktion_params = transaktion_params[:transaktion].attributes.inject({}){ |hash, (k, v)| hash.merge( k.to_sym => v )  } if !transaktion_params[:transaktion].nil?
     new_transaktion = transaktions.build(amount:transaktion_params[:amount], description:transaktion_params[:description])
-    new_transaktion.deposit!
+    begin
+      new_transaktion.deposit!
+    rescue ActiveRecord::RecordInvalid
+      return false
+    end
   end
 
   def withdraw(transaktion_params={})

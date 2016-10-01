@@ -68,6 +68,7 @@
       </div>
       <div class="modal-body">
         <%= form_for @account.transaktions.build, :url => deposit_account_path(@account), html: { method: "patch", class: "form-group", role: "form" } do |f| %>
+          <%= render 'shared/error_messages', object: f.object %>
           <div class="form-group">
             <%= f.label :description %>
             <%= f.text_field :description, class: 'form-control', placeholder: 'description of deposit' %>
