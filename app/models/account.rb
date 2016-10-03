@@ -15,7 +15,11 @@ class Account < ActiveRecord::Base
   def withdraw(transaktion_params={})
     transaktion_params = transaktion_params[:transaktion].attributes.inject({}){ |hash, (k, v)| hash.merge( k.to_sym => v )  } if !transaktion_params[:transaktion].nil?
     new_transaktion = transaktions.build(amount:transaktion_params[:amount], description:transaktion_params[:description])
-    new_transaktion.withdrawal!
+    begin
+      new_transaktion.withdrawal!
+    rescue ActiveRecord::RecordInvalid
+      return false
+    end
   end
 
   # reverse transaktion

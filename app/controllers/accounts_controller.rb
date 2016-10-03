@@ -46,7 +46,7 @@ class AccountsController < ApplicationController
       flash[:success] = "Amount added!"
       redirect_to @account
     else
-      flash[:error] = "incomplete! there were errors in your deposit"
+      flash[:error] = "incomplete! invalid parameters in your deposit"
       redirect_to @account
     end
   end
@@ -56,7 +56,8 @@ class AccountsController < ApplicationController
       flash[:success] = "Amount deducted!"
       redirect_to @account
     else
-      flash[:error] = "incomplete!"
+      flash[:error] = "incomplete! invalid parameters in your withdrawal"
+      redirect_to @account
     end
   end
 
